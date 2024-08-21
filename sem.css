@@ -133,3 +133,29 @@ button:hover {
 #confirm-no:hover {
     background-color: #c62828; 
 }
+
+button.edit {
+    background-color: #0288d1;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 12px;
+    border-radius: 3px;
+    margin-right: 5px;
+}
+
+button.edit:hover {
+    background-color: #0277bd;
+}
+
+/* Style for the editing input */
+.edit-input {
+    display: none;
+    margin-bottom: 10px;
+    width: calc(100% - 120px);
+    padding: 10px;
+    border: 1px solid #004d40;
+    border-radius: 4px;
+    font-size: 16px;
+}

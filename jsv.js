@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', () => {
     const taskInput = document.getElementById('taskInput');
     const addTaskButton = document.getElementById('addTaskButton');
@@ -8,18 +7,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const confirmNoButton = document.getElementById('confirm-no');
     let taskToRemove = null;
 
-    
     function showDialog(taskItem) {
         confirmationDialog.style.display = 'flex';
         taskToRemove = taskItem;
     }
 
-        
     function hideDialog() {
         confirmationDialog.style.display = 'none';
     }
 
-  
     confirmYesButton.addEventListener('click', () => {
         if (taskToRemove) {
             taskList.removeChild(taskToRemove);
@@ -27,19 +23,19 @@ document.addEventListener('DOMContentLoaded', () => {
         hideDialog();
     });
 
-    
     confirmNoButton.addEventListener('click', hideDialog);
 
-   
-    addTaskButton.addEventListener('click', () => {
-        const taskText = taskInput.value.trim();
-        if (taskText === '') return;
-
-     
+    function createTaskItem(taskText) {
         const listItem = document.createElement('li');
-        listItem.textContent = taskText;
-
-      
+        
+        const taskTextSpan = document.createElement('span');
+        taskTextSpan.textContent = taskText;
+        
+        const editInput = document.createElement('input');
+        editInput.type = 'text';
+        editInput.value = taskText;
+        editInput.className = 'edit-input';
+        
         const removeButton = document.createElement('button');
         removeButton.textContent = 'Remove';
         removeButton.className = 'remove';
@@ -47,13 +43,40 @@ document.addEventListener('DOMContentLoaded', () => {
             showDialog(listItem);
         });
 
-        listItem.appendChild(removeButton);
-        taskList.appendChild(listItem);
+        const editButton = document.createElement('button');
+        editButton.textContent = 'Edit';
+        editButton.className = 'edit';
+        editButton.addEventListener('click', () => {
+            if (editInput.style.display === 'none') {
+                editInput.style.display = 'block';
+                taskTextSpan.style.display = 'none';
+                editInput.focus();
+            } else {
+                const updatedText = editInput.value.trim();
+                if (updatedText) {
+                    taskTextSpan.textContent = updatedText;
+                    editInput.style.display = 'none';
+                    taskTextSpan.style.display = 'block';
+                }
+            }
+        });
 
-      
+        listItem.appendChild(taskTextSpan);
+        listItem.appendChild(editInput);
+        listItem.appendChild(editButton);
+        listItem.appendChild(removeButton);
+
+        return listItem;
+    }
+
+    addTaskButton.addEventListener('click', () => {
+        const taskText = taskInput.value.trim();
+        if (taskText === '') return;
+
+        const listItem = createTaskItem(taskText);
+        taskList.appendChild(listItem);
         taskInput.value = '';
     });
-
 
     taskInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
